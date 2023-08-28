@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { TaskStatus } from "../types/enums";
 import { Task } from "../types/Task";
+import { createTaskRequest } from "../api/Task.service";
 
 export default function TaskForm (): JSX.Element {
   const [task, setTask] = useState<Task>({
@@ -14,9 +15,10 @@ export default function TaskForm (): JSX.Element {
     setTask({...task, [name]: value});
   }
 
-  function handleSubmit (event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit (event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.info(task)
+    const response = await createTaskRequest(task);
+    console.info(response)
   }
 
   return (

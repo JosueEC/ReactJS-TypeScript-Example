@@ -1,7 +1,7 @@
 import { TaskStatus } from "./enums"
 
-export type Task = {
-  title: string,
-  description: string,
-  status: TaskStatus
+export interface Task {
+  title: string;
+  description?: string;
+  status?: TaskStatus;
 }
