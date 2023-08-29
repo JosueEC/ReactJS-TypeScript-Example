@@ -1,6 +1,6 @@
 import { Task } from "../types/Task";
 
-const API: string = 'http://localhost/3000'
+const API: string = 'http://localhost:3000'
 
 export const createTaskRequest = async (task: Task): Promise<Task> => {
   const URL: string = `${API}/task`;
