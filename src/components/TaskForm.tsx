@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from "react"
+import { useTask } from "../context/useTask";
 import { TaskStatus } from "../types/enums";
 import { CreateTask } from "../types/task.interface";
-import { createTaskRequest } from "../api/task.service";
+
 
 export default function TaskForm (): JSX.Element {
   const [task, setTask] = useState<CreateTask>({
@@ -9,6 +10,7 @@ export default function TaskForm (): JSX.Element {
     description: '',
     status: TaskStatus.PENDING
   })
+  const { createTask } = useTask();
 
   function handleChange (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = event.target;
@@ -17,8 +19,7 @@ export default function TaskForm (): JSX.Element {
 
   async function handleSubmit (event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const response = await createTaskRequest(task);
-    console.info(response)
+    createTask(task);
   }
 
   return (
