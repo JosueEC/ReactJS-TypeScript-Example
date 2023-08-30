@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { TaskStatus } from "../types/enums";
 import { CreateTask } from "../types/task.interface";
-import { createTaskRequest } from "../api/Task.service";
+import { createTaskRequest } from "../api/task.service";
 
 export default function TaskForm (): JSX.Element {
   const [task, setTask] = useState<CreateTask>({
