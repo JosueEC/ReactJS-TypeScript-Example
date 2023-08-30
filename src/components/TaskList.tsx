@@ -1,22 +1,14 @@
-import { useEffect, useState } from "react";
-import { getTaskRequest } from "../api/task.service";
-import { Task } from "../types/task.interface";
 import TaskItem from "./TaskItem";
+import { useTask } from "../context/useTask";
 
 export default function TaskList () {
-  const [taskList, setTaskList] = useState<Task[]>();
-
-  useEffect(() => {
-    getTaskRequest()
-      .then(response => response.json())
-      .then(data => setTaskList(data));
-  }, [])
+  const { tasks } = useTask();
 
   return (
     <div>
       {
-        taskList ? (
-          taskList.map((task) => {
+        tasks ? (
+          tasks.map((task) => {
             return (
               <TaskItem
                 key={task._id}
