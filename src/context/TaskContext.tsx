@@ -1,6 +1,14 @@
 // Esta es la sintaxis para crear un context en react + typescript
-import React, { createContext, useEffect, useState } from "react";
-import { createTaskRequest, getTaskRequest } from "../api/task.service";
+import React, {
+  createContext,
+  useEffect,
+  useState
+} from "react";
+import {
+  createTaskRequest,
+  getTaskRequest,
+  deleteTaskRequest
+} from "../api/task.service";
 import { CreateTask, Task } from "../types/task.interface";
 
 
@@ -8,14 +16,16 @@ import { CreateTask, Task } from "../types/task.interface";
 // una vez que hemos tipado el useState
 interface TaskContextValue {
   tasks: Task[],
-  createTask: (task: CreateTask) => void
+  createTask: (task: CreateTask) => Promise<void>,
+  deleteTask: (id: string) => Promise<void>
 }
 
 // Esto crea el contexto del componente, aqui podemos agregar
 // varios estados
 export const TaskContext = createContext<TaskContextValue>({
   tasks: [],
-  createTask: () => {}
+  createTask: async () => {},
+  deleteTask: async () => {}
 });
 
 // Esto tipa el componente que llega al componente del contexto
@@ -46,12 +56,23 @@ export const TaskProvider: React.FC<Props> = ({ children }) => {
     setTasks([...tasks, response]);
   }
 
+  const deleteTask = async (id: string) => {
+    const response = await deleteTaskRequest(id);
+    
+    if (response.status === 204) {
+      setTasks(prevState => {
+        return prevState.filter((task) => task._id !== id);
+      })
+    }
+  }
+
   // Despues solo agregamos estos estados al value del provider
   return (
     <TaskContext.Provider
       value={{
         tasks,
-        createTask
+        createTask,
+        deleteTask
       }}>
       {children}
     </TaskContext.Provider>

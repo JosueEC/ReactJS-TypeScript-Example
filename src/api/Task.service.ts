@@ -1,4 +1,4 @@
-import { Task,CreateTask } from "../types/task.interface";
+import { Task, CreateTask } from "../types/task.interface";
 
 const API: string = 'http://localhost:3000/api'
 
@@ -24,3 +24,12 @@ export const getTaskRequest = (): Promise<Response> => {
   const URL = `${API}/v1/task`;
   return fetch(URL);
 };
+
+export const deleteTaskRequest = async (id: string): Promise<Response> => {
+  const options = { method: 'DELETE' };
+  const URL = `${API}/v1/task/${id}`;
+
+  const response = await fetch(URL, options);
+  
+  return response;
+}
