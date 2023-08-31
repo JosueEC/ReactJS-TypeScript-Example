@@ -7,7 +7,8 @@ import React, {
 import {
   createTaskRequest,
   getTaskRequest,
-  deleteTaskRequest
+  deleteTaskRequest,
+  updateTaskRequest
 } from "../api/task.service";
 import { CreateTask, Task } from "../types/task.interface";
 
@@ -18,6 +19,7 @@ interface TaskContextValue {
   tasks: Task[],
   createTask: (task: CreateTask) => Promise<void>,
   deleteTask: (id: string) => Promise<void>
+  updateTask: (id: string) => Promise<void>
 }
 
 // Esto crea el contexto del componente, aqui podemos agregar
@@ -25,7 +27,8 @@ interface TaskContextValue {
 export const TaskContext = createContext<TaskContextValue>({
   tasks: [],
   createTask: async () => {},
-  deleteTask: async () => {}
+  deleteTask: async () => {},
+  updateTask: async () => {}
 });
 
 // Esto tipa el componente que llega al componente del contexto
@@ -66,13 +69,28 @@ export const TaskProvider: React.FC<Props> = ({ children }) => {
     }
   }
 
+  const updateTask = async (id: string) => {
+    const response = await updateTaskRequest(id);
+
+    setTasks(prevState => {
+      return prevState.map(task => {
+        if (task._id === response._id) {
+          return response;
+        }
+
+        return task;
+      })
+    })
+  }
+
   // Despues solo agregamos estos estados al value del provider
   return (
     <TaskContext.Provider
       value={{
         tasks,
         createTask,
-        deleteTask
+        deleteTask,
+        updateTask
       }}>
       {children}
     </TaskContext.Provider>
