@@ -14,4 +14,9 @@ export interface Task {
 
 // Esto es util cuando nuestras entradas de DTO tienen propiedades
 // diferentes a nuestros DTO de salida
-export type CreateTask = Omit<Task, '_id'>
+export type CreateTask = Omit<Task, '_id'>;
+
+// De esta forma creamos un tipo a partir de otro, en el que indicamos
+// que todos los campos del tipo son opcionales y no completamente
+// requeridos
+export type UpdateTask = Partial<CreateTask>;
